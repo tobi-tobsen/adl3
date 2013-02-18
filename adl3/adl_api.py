@@ -106,6 +106,13 @@ ADL_Adapter_AdapterInfo_Get = _libadl.ADL_Adapter_AdapterInfo_Get
 ADL_Adapter_AdapterInfo_Get.restype = c_int
 ADL_Adapter_AdapterInfo_Get.argtypes = [LPAdapterInfo, c_int]
 
+ADL_Adapter_AdapterInfoX2_Get = _libadl.ADL_Adapter_AdapterInfoX2_Get
+ADL_Adapter_AdapterInfoX2_Get.restype = c_int
+ADL_Adapter_AdapterInfoX2_Get.argtypes = [POINTER(POINTER(AdapterInfo))]
+
+#int 	ADL_Adapter_AdapterInfoX2_Get (AdapterInfo **lppAdapterInfo)
+# TODO:  Test ADL_Adapter_AdapterInfoX2_Get
+
 ADL_Adapter_ASICFamilyType_Get = _libadl.ADL_Adapter_ASICFamilyType_Get
 ADL_Adapter_ASICFamilyType_Get.restype = c_int
 ADL_Adapter_ASICFamilyType_Get.argtypes = [c_int, POINTER(c_int), POINTER(c_int)]
@@ -146,6 +153,16 @@ ADL_Adapter_CrossdisplayInfo_Set = _libadl.ADL_Adapter_CrossdisplayInfo_Set
 ADL_Adapter_CrossdisplayInfo_Set.restype = c_int
 ADL_Adapter_CrossdisplayInfo_Set.argtypes = [c_int, c_int, c_int, c_int, POINTER(c_int)]
 
+ADL_Adapter_CrossDisplayPlatformInfo_Get = _libadl.ADL_Adapter_CrossDisplayPlatformInfo_Get
+ADL_Adapter_CrossDisplayPlatformInfo_Get.restype = c_int
+ADL_Adapter_CrossDisplayPlatformInfo_Get.argtypes = [c_int, POINTER(c_int), POINTER(c_int)]
+#TODO: Test ADL_Adapter_CrossDisplayPlatformInfo_Get
+
+ADL_Adapter_CrossdisplayInfoX2_Set = _libadl.ADL_Adapter_CrossdisplayInfoX2_Set
+ADL_Adapter_CrossdisplayInfoX2_Set.restype = c_int
+ADL_Adapter_CrossdisplayInfoX2_Set.argtypes = [c_int, c_int, c_int, c_int, c_int, POINTER(c_int)]
+# Todo: Test ADL_Adapter_CrossdisplayInfoX2_Set
+
 ADL_Adapter_Crossfire_Caps = _libadl.ADL_Adapter_Crossfire_Caps
 ADL_Adapter_Crossfire_Caps.restype = c_int
 ADL_Adapter_Crossfire_Caps.argtypes = [c_int, POINTER(c_int), POINTER(c_int), POINTER(POINTER(ADLCrossfireComb))]
@@ -161,6 +178,11 @@ ADL_Adapter_Crossfire_Set.argtypes = [c_int, POINTER(ADLCrossfireComb)]
 ADL_Display_DisplayInfo_Get = _libadl.ADL_Display_DisplayInfo_Get
 ADL_Display_DisplayInfo_Get.restype = c_int
 ADL_Display_DisplayInfo_Get.argtypes = [c_int, POINTER(c_int), POINTER(POINTER(ADLDisplayInfo)), c_int]
+
+ADL_Display_DpMstInfo_Get = _libadl.ADL_Display_DisplayInfo_Get
+ADL_Display_DpMstInfo_Get.restype = c_int
+ADL_Display_DpMstInfo_Get.argtypes = [c_int, POINTER(c_int), POINTER(POINTER(ADLDisplayDPMSTInfo)), c_int]
+#TODO: Test ADL_Display_DpMstInfo_Get
 
 ADL_Display_NumberOfDisplays_Get = _libadl.ADL_Display_NumberOfDisplays_Get
 ADL_Display_NumberOfDisplays_Get.restype = c_int
@@ -370,6 +392,10 @@ ADL_Display_SLSMapConfig_Get = _libadl.ADL_Display_SLSMapConfig_Get
 ADL_Display_SLSMapConfig_Get.restype = c_int
 ADL_Display_SLSMapConfig_Get.argtypes = [c_int, c_int, POINTER(ADLSLSMap), POINTER(c_int), POINTER(POINTER(ADLSLSTarget)), POINTER(c_int), POINTER(POINTER(ADLSLSMode)), POINTER(c_int), POINTER(POINTER(ADLBezelTransientMode)), POINTER(c_int), POINTER(POINTER(ADLBezelTransientMode)), POINTER(c_int), POINTER(POINTER(ADLSLSOffset)), c_int]
 
+#int 	ADL_Display_SLSMapConfigX2_Get (int iAdapterIndex, int iSLSMapIndex, ADLSLSMap *lpSLSMap, int *lpNumSLSTarget, ADLSLSTarget **lppSLSTarget, int *lpNumNativeMode, ADLSLSMode **lppNativeMode, int *lpNumNativeModeOffsets, ADLSLSOffset **lppNativeModeOffsets, int *lpNumBezelMode, ADLBezelTransientMode **lppBezelMode, int *lpNumTransientMode, ADLBezelTransientMode **lppTransientMode, int *lpNumSLSOffset, ADLSLSOffset **lppSLSOffset, int iOption)
+# 	Function to retrieve an SLS configuration.
+#TODO: implement and test ADL_Display_SLSMapConfigX2_Get
+
 ADL_Display_SLSMapConfig_Create = _libadl.ADL_Display_SLSMapConfig_Create
 ADL_Display_SLSMapConfig_Create.restype = c_int
 ADL_Display_SLSMapConfig_Create.argtypes = [c_int, ADLSLSMap, c_int, POINTER(ADLSLSTarget), c_int, POINTER(c_int), c_int]
@@ -386,7 +412,7 @@ ADL_Display_SLSMapConfig_Rearrange = _libadl.ADL_Display_SLSMapConfig_Rearrange
 ADL_Display_SLSMapConfig_Rearrange.restype = c_int
 ADL_Display_SLSMapConfig_Rearrange.argtypes = [c_int, c_int, c_int, POINTER(ADLSLSTarget), ADLSLSMap, c_int]
 
-if _platform == "Windows" and _release == "XP":
+if (_platform == "Windows" or _os == "nt") and _release == "XP":
     ADL_Display_PossibleMode_WinXP_Get = _libadl.ADL_Display_PossibleMode_WinXP_Get
     ADL_Display_PossibleMode_WinXP_Get.restype = c_int
     ADL_Display_PossibleMode_WinXP_Get.argtypes = [c_int, c_int, POINTER(ADLDisplayTarget), c_int, c_int, POINTER(c_int), POINTER(POINTER(ADLMode))]
@@ -402,6 +428,10 @@ ADL_Display_BezelOffset_Set.argtypes = [c_int, c_int, c_int, LPADLSLSOffset, ADL
 ADL_Display_BezelSupported_Validate = _libadl.ADL_Display_BezelSupported_Validate
 ADL_Display_BezelSupported_Validate.restype = c_int
 ADL_Display_BezelSupported_Validate.argtypes = [c_int, c_int, LPADLPossibleSLSMap, POINTER(c_int), POINTER(LPADLPossibleMapResult)]
+
+#int 	ADL_Workstation_EnableUnsupportedDisplayModes (int iAdapterIndex)
+#Function to set the Registry key "UnsupportedMonitorModesAllowed" when 10bit Pixel format is enabled from workstation aspect.
+#TODO: Implement ADL_Workstation_EnableUnsupportedDisplayModes
 
 ADL_Display_ColorCaps_Get = _libadl.ADL_Display_ColorCaps_Get
 ADL_Display_ColorCaps_Get.restype = c_int
@@ -713,7 +743,7 @@ ADL_Workstation_LoadBalancing_Caps = _libadl.ADL_Workstation_LoadBalancing_Caps
 ADL_Workstation_LoadBalancing_Caps.restype = c_int
 ADL_Workstation_LoadBalancing_Caps.argtypes = [c_int, POINTER(c_int), POINTER(c_int)]
 
-if _platform == "Linux":
+if _platform == "Linux" or _os == "posix":
     ADL_Adapter_MemoryInfo_Get = _libadl.ADL_Adapter_MemoryInfo_Get
     ADL_Adapter_MemoryInfo_Get.restype = c_int
     ADL_Adapter_MemoryInfo_Get.argtypes = [c_int, POINTER(ADLMemoryInfo)]
