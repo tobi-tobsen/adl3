@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-# This code is based on the AMD Display Library 3.0 SDK
+# This code is based on the AMD Display Library 3.0 and 5.0 SDK
 
 import platform
 from ctypes import *
@@ -27,12 +27,13 @@ from .adl_defines import *
 from .adl_structures import *
 
 _platform = platform.system()
+_os = platform.os.name
 _release = platform.release()
 
-if _platform == "Linux" or _platform == "Windows":
+if _platform == "Linux" or _os == "posix" or _platform == "Windows" or _os == "nt":
     from ctypes import CDLL, CFUNCTYPE
 
-    if _platform == "Linux":
+    if _platform == "Linux" or _os == "posix":
         from ctypes import RTLD_GLOBAL
 
         # pre-load libXext (required by libatiadlxx.so in 11.12)
@@ -75,7 +76,7 @@ if _platform == "Linux" or _platform == "Windows":
             lpBuffer[0] = None
 
 else:
-    raise RuntimeError("Platform '%s' is not Supported." % platform.system())
+    raise RuntimeError("Platform '%s' or OS '%s' is not Supported." % (_platform, _os))
 
 ADL_Main_Control_Create = _libadl.ADL_Main_Control_Create
 ADL_Main_Control_Create.restype = c_int

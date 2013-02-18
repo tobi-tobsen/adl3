@@ -20,13 +20,15 @@
 #
 # This code is based on the AMD Display Library 3.0 and 5.0 SDK
 
+from adl3.adl_defines import *
 from ctypes import Structure, POINTER
 from ctypes import c_int, c_uint, c_float, c_ubyte, c_char, c_char_p, c_short, c_long, c_longlong
 import platform
 
 _platform = platform.system()
+_os = platform.os.name
 
-if _platform == "Linux":
+if _platform == "Linux" or _os == "posix":
     class struct_AdapterInfo(Structure):
         __slots__ = [
             'iSize',
@@ -58,7 +60,7 @@ if _platform == "Linux":
         ('iDrvIndex', c_int),
         ('strXScreenConfigName', c_char * 256),
     ]
-elif _platform == "Windows":
+elif _platform == "Windows" or _os == "nt":
     class struct_AdapterInfo(Structure):
         __slots__ = [
             'iSize',
@@ -141,7 +143,7 @@ ADLMemoryRequired = struct_ADLMemoryRequired    # ADL_SDK_5.0/include/adl_struct
 LPADLMemoryRequired = POINTER(struct_ADLMemoryRequired)     # ADL_SDK_5.0/include/adl_structures.h:127
 
 
-class ADLMemoryDisplayFeatures(Structure):
+class struct_ADLMemoryDisplayFeatures(Structure):
     __slots__ = [
         'iDisplayIndex',
         'iDisplayFeatureValue'
@@ -209,7 +211,7 @@ class struct_ADLDDCInfo2(Structure):
         'ulSerialID',
         'iReserved'
     ]
-struct_ADLDDCInfo._fields_ = [
+struct_ADLDDCInfo2._fields_ = [
     ('ulSize', c_int),
     ('ulSupportsDDC', c_int),
     ('ulManufacturerID', c_int),
@@ -1350,16 +1352,16 @@ LPADLPXConfigCaps = POINTER(struct_ADLPXConfigCaps)      # ADL_SDK_5.0/include/a
 
 class struct_ADLApplicationData(Structure):
     __slots__ = [
-        ('strPathName', c_char * ADL_MAX_PATH),
-        ('strFileName', c_char * ADL_APP_PROFILE_FILENAME_LENGTH),
-        ('strTimeStamp', c_char * ADL_APP_PROFILE_TIMESTAMP_LENGTH),
-        ('strVersion', c_char * ADL_APP_PROFILE_VERSION_LENGTH),
-    ]
-struct_ADLApplicationData._fields_ = [
         'strPathName',
         'strFileName',
         'strTimeStamp',
         'strVersion'
+    ]
+struct_ADLApplicationData._fields_ = [
+        ('strPathName', c_char * ADL_MAX_PATH),
+        ('strFileName', c_char * ADL_APP_PROFILE_FILENAME_LENGTH),
+        ('strTimeStamp', c_char * ADL_APP_PROFILE_TIMESTAMP_LENGTH),
+        ('strVersion', c_char * ADL_APP_PROFILE_VERSION_LENGTH),
 ]
 ADLApplicationData = struct_ADLApplicationData     # ADL_SDK_5.0/include/adl_structures.h:1640
 
