@@ -18,10 +18,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-# This code is based on the AMD Display Library 3.0 SDK
+# This code is based on the AMD Display Library 3.0 and 5.0 SDK
 
 from ctypes import Structure, POINTER
-from ctypes import c_int, c_float, c_char, c_char_p, c_short, c_long, c_longlong
+from ctypes import c_int, c_uint, c_float, c_ubyte, c_char, c_char_p, c_short, c_long, c_longlong
 import platform
 
 _platform = platform.system()
@@ -109,6 +109,7 @@ struct_XScreenInfo._fields_ = [
 
 XScreenInfo = struct_XScreenInfo     # ADL_SDK_3.0/include/adl_structures.h:152
 LPXScreenInfo = POINTER(struct_XScreenInfo)     # ADL_SDK_3.0/include/adl_structures.h:152
+
 class struct_ADLMemoryInfo(Structure):
     __slots__ = [
         'iMemorySize',
@@ -120,9 +121,40 @@ struct_ADLMemoryInfo._fields_ = [
     ('strMemoryType', c_char * 256),
     ('iMemoryBandwidth', c_longlong),
 ]
-
 ADLMemoryInfo = struct_ADLMemoryInfo     # ADL_SDK_3.0/include/adl_structures.h:181
 LPADLMemoryInfo = POINTER(struct_ADLMemoryInfo)     # ADL_SDK_3.0/include/adl_structures.h:181
+
+
+class struct_ADLMemoryRequired(Structure):
+    __slots__ = [
+        'iMemoryReq',
+        'iType',
+        'iDisplayFeatureValue',
+    ]
+
+struct_ADLMemoryRequired._fields = [
+    ('iMemoryReq', c_longlong),
+    ('iType', c_int),
+    ('iDisplayFeatureValue', c_int)
+]
+ADLMemoryRequired = struct_ADLMemoryRequired    # ADL_SDK_5.0/include/adl_structures.h:127
+LPADLMemoryRequired = POINTER(struct_ADLMemoryRequired)     # ADL_SDK_5.0/include/adl_structures.h:127
+
+
+class ADLMemoryDisplayFeatures(Structure):
+    __slots__ = [
+        'iDisplayIndex',
+        'iDisplayFeatureValue'
+    ]
+
+struct_ADLMemoryDisplayFeatures._fields = [
+    ('iDisplayIndex', c_int),
+    ('iDisplayFeatureValue', c_int)
+]
+ADLMemoryDisplayFeatures = struct_ADLMemoryDisplayFeatures    # ADL_SDK_5.0/include/adl_structures.h:145
+LPADLMemoryDisplayFeatures = POINTER(struct_ADLMemoryDisplayFeatures)     # ADL_SDK_5.0/include/adl_structures.h:145
+
+
 class struct_ADLDDCInfo(Structure):
     __slots__ = [
         'ulSize',
@@ -155,6 +187,51 @@ struct_ADLDDCInfo._fields_ = [
 
 ADLDDCInfo = struct_ADLDDCInfo     # ADL_SDK_3.0/include/adl_structures.h:235
 LPADLDDCInfo = POINTER(struct_ADLDDCInfo)     # ADL_SDK_3.0/include/adl_structures.h:235
+
+
+class struct_ADLDDCInfo2(Structure):
+    __slots__ = [
+        'ulSize',
+        'ulSupportsDDC',
+        'ulManufacturerID',
+        'ulProductID',
+        'cDisplayName',
+        'ulMaxHResolution',
+        'ulMaxVResolution',
+        'ulMaxRefresh',
+        'ulPTMCx',
+        'ulPTMCy',
+        'ulPTMRefreshRate',
+        'ulDDCInfoFlag',
+
+        'bPackedPixelSupported',
+        'iPanelPixelFormat',
+        'ulSerialID',
+        'iReserved'
+    ]
+struct_ADLDDCInfo._fields_ = [
+    ('ulSize', c_int),
+    ('ulSupportsDDC', c_int),
+    ('ulManufacturerID', c_int),
+    ('ulProductID', c_int),
+    ('cDisplayName', c_char * 256),
+    ('ulMaxHResolution', c_int),
+    ('ulMaxVResolution', c_int),
+    ('ulMaxRefresh', c_int),
+    ('ulPTMCx', c_int),
+    ('ulPTMCy', c_int),
+    ('ulPTMRefreshRate', c_int),
+    ('ulDDCInfoFlag', c_int),
+    ('bPackedPixelSupported', c_int),
+    ('iPanelPixelFormat', c_int),
+    ('ulSerialID', c_int),
+    ('iReserved', c_int * 26)
+]
+
+ADLDDCInfo2 = struct_ADLDDCInfo2     # ADL_SDK_5.0/include/adl_structures.h:189
+LPADLDDCInfo2 = POINTER(struct_ADLDDCInfo2)     # ADL_SDK_3.0/include/adl_structures.h:189
+
+
 class struct_ADLGamma(Structure):
     __slots__ = [
         'fRed',
@@ -277,6 +354,31 @@ struct_ADLDisplayInfo._fields_ = [
 
 ADLDisplayInfo = struct_ADLDisplayInfo     # ADL_SDK_3.0/include/adl_structures.h:465
 LPADLDisplayInfo = POINTER(struct_ADLDisplayInfo)     # ADL_SDK_3.0/include/adl_structures.h:465
+
+class struct_ADLDisplayDPMSTInfo(Structure):
+    __slots__ = [
+        'displayID',
+        'iTotalAvailableBandwidthInMpbs',
+        'iAllocatedBandwidthInMbps',
+        'strGlobalUniqueIdentifier',
+        'radLinkCount',
+        'iPhysicalConnectorID',
+        'rad'
+    ]
+struct_ADLDisplayDPMSTInfo._fields_ = [
+    ('displayID', ADLDisplayID),
+    ('iTotalAvailableBandwidthInMpbs', c_int),
+    ('iAllocatedBandwidthInMbps', c_int),
+    ('strGlobalUniqueIdentifier', c_char * ADL_MAX_PATH),
+    ('radLinkCount', c_int),
+    ('iPhysicalConnectorID', c_int), 
+    ('rad', c_char * ADL_MAX_RAD_LINK_COUNT)
+]
+
+ADLDisplayDPMSTInfo = struct_ADLDisplayDPMSTInfo     # ADL_SDK5.0/include/adl_structures.h:407
+LPADLDisplayDPMSTInfo = POINTER(struct_ADLDisplayDPMSTInfo)     # ADL_SDK_5.0/include/adl_structures.h:407
+
+
 class struct_ADLDisplayMode(Structure):
     __slots__ = [
         'iPelsHeight',
@@ -858,6 +960,7 @@ struct_ADLAdapterLocation._fields_ = [
 ]
 
 ADLAdapterLocation = struct_ADLAdapterLocation     # ADL_SDK_3.0/include/adl_structures.h:1585
+ADLBdf = struct_ADLAdapterLocation      # ADL_SDK_5.0/include/adl_structures.h:1118
 class struct_ADLMVPUCaps(Structure):
     __slots__ = [
         'iSize',
@@ -1228,3 +1331,303 @@ struct_ADLBezelOffsetSteppingSize._fields_ = [
 
 ADLBezelOffsetSteppingSize = struct_ADLBezelOffsetSteppingSize     # ADL_SDK_3.0/include/adl_structures.h:2322
 LPADLBezelOffsetSteppingSize = POINTER(struct_ADLBezelOffsetSteppingSize)     # ADL_SDK_3.0/include/adl_structures.h:2322
+
+
+class struct_ADLPXConfigCaps(Structure):
+    __slots__ = [
+        'iAdapterIndex',
+        'iPXConfigCapMask',
+        'iPXConfigCapValue'
+    ]
+struct_ADLPXConfigCaps._fields_ = [
+    ('iAdapterIndex', c_int),
+    ('iPXConfigCapMask', c_int),
+    ('iPXConfigCapValue', c_int),
+]
+ADLPXConfigCaps = struct_ADLPXConfigCaps     # ADL_SDK_5.0/include/adl_structures.h:1640
+LPADLPXConfigCaps = POINTER(struct_ADLPXConfigCaps)      # ADL_SDK_5.0/include/adl_structures.h:1640
+
+
+class struct_ADLApplicationData(Structure):
+    __slots__ = [
+        ('strPathName', c_char * ADL_MAX_PATH),
+        ('strFileName', c_char * ADL_APP_PROFILE_FILENAME_LENGTH),
+        ('strTimeStamp', c_char * ADL_APP_PROFILE_TIMESTAMP_LENGTH),
+        ('strVersion', c_char * ADL_APP_PROFILE_VERSION_LENGTH),
+    ]
+struct_ADLApplicationData._fields_ = [
+        'strPathName',
+        'strFileName',
+        'strTimeStamp',
+        'strVersion'
+]
+ADLApplicationData = struct_ADLApplicationData     # ADL_SDK_5.0/include/adl_structures.h:1640
+
+
+class struct_PropertyRecord(Structure):
+    __slots__ = [
+        'strName',
+        'eType',
+        'iDataSize',
+        'uData',
+    ]
+struct_PropertyRecord._fields_ = [
+    ('strName', c_char * ADL_APP_PROFILE_PROPERTY_LENGTH),
+    ('eType', c_uint),
+    ('iDataSize', c_int),
+    ('uData', c_ubyte * 1)    
+]
+PropertyRecord = struct_PropertyRecord     # ADL_SDK_5.0/include/adl_structures.h:1678
+
+
+class struct_ADLApplicationProfile(Structure):
+    __slots__ = [
+        'iCount',
+        'record',
+        'iDataSize',
+        'uData',
+    ]
+struct_ADLApplicationProfile._fields_ = [
+    ('strName', c_int),
+    ('eType', PropertyRecord * 1),
+] 
+# todo: the above might be wrong
+ADLApplicationProfile = struct_ADLApplicationProfile     # ADL_SDK_5.0/include/adl_structures.h:1692
+
+
+class struct_ADLPowerControlInfo(Structure):
+    __slots__ = [
+        'iMinValue',
+        'iMaxValue',
+        'iStepValue',
+    ]
+struct_ADLPowerControlInfo._fields_ = [
+    ('iMinValue', c_int),
+    ('iMaxValue', c_int),
+    ('iStepValue', c_int),
+]
+ADLPowerControlInfo = struct_ADLPowerControlInfo    # ADL_SDK_5.0/include/adl_structures.h:1710
+
+
+class struct_ADLControllerMode(Structure):
+    __slots__ = [
+        'iModifiers',
+        'iViewPositionCx',
+        'iViewPositionCy',
+        'iViewPanLockLeft',
+        'iViewPanLockRight',
+        'iViewPanLockTop',
+        'iViewPanLockBottom',
+        'iViewResolutionCx',
+        'iViewResolutionCy',
+    ]
+struct_ADLControllerMode._fields_ = [
+        ('iModifiers', c_int),
+        ('iViewPositionCx', c_int),
+        ('iViewPositionCy', c_int),
+        ('iViewPanLockLeft', c_int),
+        ('iViewPanLockRight', c_int),
+        ('iViewPanLockTop', c_int),
+        ('iViewPanLockBottom', c_int),
+        ('iViewResolutionCx', c_int),
+        ('iViewResolutionCy', c_int)
+]
+ADLControllerMode = struct_ADLControllerMode    # ADL_SDK_5.0/include/adl_structures.h:1748
+
+
+class struct_ADLDisplayIdentifier(Structure):
+    __slots__ = [
+        'ulDisplayIndex',
+        'ulManufacturerId',
+        'ulProductId',
+        'ulSerialNo',
+    ]
+struct_ADLDisplayIdentifier._fields_ = [
+       ('ulDisplayIndex', c_long),
+       ('ulManufacturerId', c_long),
+       ('ulProductId', c_long),
+       ('ulSerialNo', c_long),
+]
+ADLDisplayIdentifier = struct_ADLDisplayIdentifier    # ADL_SDK_5.0/include/adl_structures.h:1770
+
+
+class struct_ADLOD6ParameterRange(Structure):
+    __slots__ = [
+        'iMin',
+        'iMax',
+        'iStep',
+    ]
+struct_ADLOD6ParameterRange._fields_ = [
+       ('iMin', c_int), 
+       ('iMax', c_int), 
+       ('iStep', c_int)
+]
+ADLOD6ParameterRange = struct_ADLOD6ParameterRange    # ADL_SDK_5.0/include/adl_structures.h:1787
+
+
+class struct_ADLOD6Capabilities(Structure):
+    __slots__ = [
+        'iCapabilities',
+        'iSupportedStates',
+        'iNumberOfPerformanceLevels',
+        'sEngineClockRange',
+        'sMemoryClockRange',
+        'iExtValue',
+        'iExtMask',
+    ]
+struct_ADLOD6Capabilities._fields_ = [
+        ('iCapabilities', c_int),
+        ('iSupportedStates', c_int),
+        ('iNumberOfPerformanceLevels', c_int),
+        ('sEngineClockRange', ADLOD6ParameterRange),
+        ('sMemoryClockRange',ADLOD6ParameterRange), 
+        ('iExtValue', c_int),
+        ('iExtMask', c_int),
+]
+ADLOD6Capabilities = struct_ADLOD6Capabilities    # ADL_SDK_5.0/include/adl_structures.h:1821
+
+
+class struct_ADLOD6PerformanceLevel(Structure):
+    __slots__ = [
+        'iEngineClock',
+        'iMemoryClock',
+    ]
+struct_ADLOD6PerformanceLevel._fields_ = [
+        ('iEngineClock', c_int),
+        ('iMemoryClock', c_int),
+]
+ADLOD6PerformanceLevel = struct_ADLOD6PerformanceLevel    # ADL_SDK_5.0/include/adl_structures.h:1836
+
+
+class struct_ADLOD6StateInfo(Structure):
+    __slots__ = [
+        'iNumberOfPerformanceLevels',
+        'iExtValue',
+        'iExtMask',
+        'aLevels'
+    ]
+struct_ADLOD6StateInfo._fields_ = [
+       ('iNumberOfPerformanceLevels', c_int),
+       ('iExtValue', c_int),
+       ('iExtMask', c_int),
+       ('aLevels', ADLOD6PerformanceLevel * 1),
+]
+# todo: the above might be wrong
+ADLOD6StateInfo = struct_ADLOD6StateInfo    # ADL_SDK_5.0/include/adl_structures.h:1862
+
+
+class struct_ADLOD6CurrentStatus(Structure):
+    __slots__ = [
+        'iEngineClock',
+        'iMemoryClock',
+        'iActivityPercent',
+        'iCurrentPerformanceLevel',
+        'iCurrentBusSpeed',
+        'iCurrentBusLanes',
+        'iMaximumBusLanes',
+        'iExtValue',
+        'iExtMask',
+    ]
+struct_ADLOD6CurrentStatus._fields_ = [
+        ('iEngineClock', c_int),
+        ('iMemoryClock', c_int),
+        ('iActivityPercent', c_int),
+        ('iCurrentPerformanceLevel', c_int),
+        ('iCurrentBusSpeed', c_int),
+        ('iCurrentBusLanes', c_int),
+        ('iMaximumBusLanes', c_int),
+        ('iExtValue', c_int),
+        ('iExtMask', c_int),
+]
+ADLOD6CurrentStatus = struct_ADLOD6CurrentStatus    # ADL_SDK_5.0/include/adl_structures.h:1893
+
+
+class struct_ADLOD6ThermalControllerCaps(Structure):
+    __slots__ = [
+        'iCapabilities',
+        'iFanMinPercent',
+        'iFanMaxPercent',
+        'iFanMinRPM',
+        'iFanMaxRPM',
+        'iExtValue',
+        'iExtMask',
+    ]
+struct_ADLOD6ThermalControllerCaps._fields_ = [
+        ('iCapabilities', c_int),
+        ('iFanMinPercent', c_int),
+        ('iFanMaxPercent', c_int),
+        ('iFanMinRPM', c_int),
+        ('iFanMaxRPM', c_int),
+        ('iExtValue', c_int),
+        ('iExtMask', c_int),
+]
+ADLOD6ThermalControllerCaps = struct_ADLOD6ThermalControllerCaps    # ADL_SDK_5.0/include/adl_structures.h:1920
+
+
+class struct_ADLOD6FanSpeedInfo(Structure):
+    __slots__ = [
+        'iSpeedType',
+        'iFanSpeedPercent',
+        'iFanSpeedRPM',
+        'iExtValue',
+        'iExtMask',
+    ]
+struct_ADLOD6FanSpeedInfo._fields_ = [
+        ('iSpeedType', c_int),
+        ('iFanSpeedPercent', c_int),
+        ('iFanSpeedRPM', c_int),
+        ('iExtValue', c_int),
+        ('iExtMask', c_int),
+]
+ADLOD6FanSpeedInfo = struct_ADLOD6FanSpeedInfo    # ADL_SDK_5.0/include/adl_structures.h:1942
+
+
+class struct_ADLOD6FanSpeedValue(Structure):
+    __slots__ = [
+        'iSpeedType',
+        'iFanSpeed',
+        'iExtValue',
+        'iExtMask',
+    ]
+struct_ADLOD6FanSpeedValue._fields_ = [
+        ('iSpeedType', c_int),
+        ('iFanSpeed', c_int),
+        ('iExtValue', c_int),
+        ('iExtMask', c_int),
+]
+ADLOD6FanSpeedValue = struct_ADLOD6FanSpeedValue    # ADL_SDK_5.0/include/adl_structures.h:1962
+
+
+class struct_ADLOD6PowerControlInfo(Structure):
+    __slots__ = [
+        'iMinValue',
+        'iMaxValue',
+        'iStepValue',
+        'iExtValue',
+        'iExtMask',
+    ]
+struct_ADLOD6PowerControlInfo._fields_ = [
+        ('iMinValue', c_int),
+        ('iMaxValue', c_int),
+        ('iStepValue', c_int),
+        ('iExtValue', c_int),
+        ('iExtMask', c_int),
+]
+ADLOD6PowerControlInfo = struct_ADLOD6PowerControlInfo    # ADL_SDK_5.0/include/adl_structures.h:1986
+
+
+class struct_ADLECCData(Structure):
+    __slots__ = [
+        'iSec',
+        'iDed',
+    ]
+struct_ADLECCData._fields_ = [
+        ('iSec', c_int),
+        ('iDed', c_int),
+]
+ADLECCData = struct_ADLECCData    # ADL_SDK_5.0/include/adl_structures.h:2001
+
+
+
+
+
