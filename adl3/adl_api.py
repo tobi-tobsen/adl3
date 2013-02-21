@@ -429,10 +429,11 @@ ADL_Display_BezelSupported_Validate = _libadl.ADL_Display_BezelSupported_Validat
 ADL_Display_BezelSupported_Validate.restype = c_int
 ADL_Display_BezelSupported_Validate.argtypes = [c_int, c_int, LPADLPossibleSLSMap, POINTER(c_int), POINTER(LPADLPossibleMapResult)]
 
-ADL_Workstation_EnableUnsupportedDisplayModes = _libadl.ADL_Workstation_EnableUnsupportedDisplayModes
-ADL_Workstation_EnableUnsupportedDisplayModes.restype = c_int
-ADL_Workstation_EnableUnsupportedDisplayModes.argtypes = [c_int]
-#TODO: Test ADL_Workstation_EnableUnsupportedDisplayModes
+#TODO: ADL_Workstation_EnableUnsupportedDisplayModes is mentioned in the docs but undefined in the dll?
+#ADL_Workstation_EnableUnsupportedDisplayModes = _libadl.ADL_Workstation_EnableUnsupportedDisplayModes
+#ADL_Workstation_EnableUnsupportedDisplayModes.restype = c_int
+#ADL_Workstation_EnableUnsupportedDisplayModes.argtypes = [c_int]
+
 
 ADL_Display_ColorCaps_Get = _libadl.ADL_Display_ColorCaps_Get
 ADL_Display_ColorCaps_Get.restype = c_int
