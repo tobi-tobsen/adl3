@@ -429,9 +429,10 @@ ADL_Display_BezelSupported_Validate = _libadl.ADL_Display_BezelSupported_Validat
 ADL_Display_BezelSupported_Validate.restype = c_int
 ADL_Display_BezelSupported_Validate.argtypes = [c_int, c_int, LPADLPossibleSLSMap, POINTER(c_int), POINTER(LPADLPossibleMapResult)]
 
-#int 	ADL_Workstation_EnableUnsupportedDisplayModes (int iAdapterIndex)
-#Function to set the Registry key "UnsupportedMonitorModesAllowed" when 10bit Pixel format is enabled from workstation aspect.
-#TODO: Implement ADL_Workstation_EnableUnsupportedDisplayModes
+ADL_Workstation_EnableUnsupportedDisplayModes = _libadl.ADL_Workstation_EnableUnsupportedDisplayModes
+ADL_Workstation_EnableUnsupportedDisplayModes.restype = c_int
+ADL_Workstation_EnableUnsupportedDisplayModes.argtypes = [c_int]
+#TODO: Test ADL_Workstation_EnableUnsupportedDisplayModes
 
 ADL_Display_ColorCaps_Get = _libadl.ADL_Display_ColorCaps_Get
 ADL_Display_ColorCaps_Get.restype = c_int
@@ -532,6 +533,24 @@ ADL_Display_PowerXpress_AutoSwitchConfig_Get.argtypes = [c_int, POINTER(c_int), 
 ADL_Display_PowerXpress_AutoSwitchConfig_Set = _libadl.ADL_Display_PowerXpress_AutoSwitchConfig_Set
 ADL_Display_PowerXpress_AutoSwitchConfig_Set.restype = c_int
 ADL_Display_PowerXpress_AutoSwitchConfig_Set.argtypes = [c_int, c_int, c_int]
+
+# TODO: implement and test these
+#int 	ADL_PowerXpress_Config_Caps (int iAdapterIndex, ADLPXConfigCaps *lpPXConfigCaps)
+# 	This function gets the PowerXpress configuration Caps. 
+#int 	ADL_PowerXpress_Scheme_Get (int iAdapterIndex, ADLPXScheme *lpPXSchemeRange, ADLPXScheme *lpPXSchemeCurrentState, ADLPXScheme *lpPXSchemeDefaultState)
+# 	This function gets the PowerXpress scheme. 
+#int 	ADL_PowerXpress_Scheme_Set (int iAdapterIndex, ADLPXScheme scheme)
+# 	This function sets the PowerXpress scheme. 
+#int 	ADL_PowerXpress_AncillaryDevices_Get (int iAdapterIndex, int *lpNumberOfAncillaryDevices, ADLBdf **lppAncillaryDevices)
+# 	This function gets ancillary GPUs.
+
+# TODO: implement and test these
+#int 	ADL_Display_ViewPort_Set (int iAdapterIndex, int iDisplayIndex, ADLControllerMode *lpControllerMode)
+# 	Function to change the view position, view size or view pan lock of a selected display. 
+#int 	ADL_Display_ViewPort_Get (int iAdapterIndex, int iDisplayIndex, ADLControllerMode *lpControllerMode)
+# 	Function to get the view position, view size or view pan lock of a selected display. 
+#int 	ADL_Display_ViewPort_Cap (int iAdapterIndex, int *lpSupported)
+# 	Function to check if the selected adapter supports the view port control.
 
 ADL_DFP_BaseAudioSupport_Get = _libadl.ADL_DFP_BaseAudioSupport_Get
 ADL_DFP_BaseAudioSupport_Get.restype = c_int
@@ -637,8 +656,18 @@ ADL_Overdrive5_ODPerformanceLevels_Set = _libadl.ADL_Overdrive5_ODPerformanceLev
 ADL_Overdrive5_ODPerformanceLevels_Set.restype = c_int
 ADL_Overdrive5_ODPerformanceLevels_Set.argtypes = [c_int, POINTER(ADLODPerformanceLevels)]
 
-# PowerControl APIs are undocumented, discovered via the AMDOverdriveCtrl project
+# PowerControl APIs were undocumented in ADL3, but discovered via the AMDOverdriveCtrl project
 # http://phoronix.com/forums/showthread.php?55589-undocumented-feature-powertune
+# These are now documented in ADL5
+
+ADL_Overdrive5_PowerControl_Caps = _libadl.ADL_Overdrive5_PowerControl_Caps
+ADL_Overdrive5_PowerControl_Caps.restype = c_int
+ADL_Overdrive5_PowerControl_Caps.argtypes = [c_int, POINTER(c_int)]
+
+ADL_Overdrive5_PowerControlInfo_Get = _libadl.ADL_Overdrive5_PowerControlInfo_Get
+ADL_Overdrive5_PowerControlInfo_Get.restype = c_int
+ADL_Overdrive5_PowerControlInfo_Get.argtypes = [c_int, POINTER(ADLPowerControlInfo)]
+
 ADL_Overdrive5_PowerControl_Get = _libadl.ADL_Overdrive5_PowerControl_Get
 ADL_Overdrive5_PowerControl_Get.restype = c_int
 ADL_Overdrive5_PowerControl_Get.argtypes = [c_int, POINTER(c_int), POINTER(c_int)]
@@ -647,13 +676,44 @@ ADL_Overdrive5_PowerControl_Set = _libadl.ADL_Overdrive5_PowerControl_Set
 ADL_Overdrive5_PowerControl_Set.restype = c_int
 ADL_Overdrive5_PowerControl_Set.argtypes = [c_int, c_int]
 
-ADL_Overdrive5_PowerControl_Caps = _libadl.ADL_Overdrive5_PowerControl_Caps
-ADL_Overdrive5_PowerControl_Caps.restype = c_int
-ADL_Overdrive5_PowerControl_Caps.argtypes = [c_int, POINTER(c_int), POINTER(c_int)]
+ADL_Overdrive_Caps = _libadl.ADL_Overdrive_Caps
+ADL_Overdrive_Caps.restype = c_int
+ADL_Overdrive_Caps.argtypes = [c_int, POINTER(c_int), POINTER(c_int), POINTER(c_int)]
+#TODO: test the ADL_Overdrive5 PowerControl methods
+#TODO: test the ADL_Overdrive_Caps
 
-ADL_Overdrive5_PowerControlInfo_Get = _libadl.ADL_Overdrive5_PowerControlInfo_Get
-ADL_Overdrive5_PowerControlInfo_Get.restype = c_int
-ADL_Overdrive5_PowerControlInfo_Get.argtypes = [c_int]
+#TODO implement and test Overdrive6 APIS:
+#Overdrive6 APIs
+
+#Functions
+#int 	ADL_Overdrive6_Capabilities_Get (int iAdapterIndex, ADLOD6Capabilities *lpODCapabilities)
+# 	Function to retrieve the current Overdrive capabilities. 
+#int 	ADL_Overdrive6_StateInfo_Get (int iAdapterIndex, int iStateType, ADLOD6StateInfo *lpStateInfo)
+# 	Function to retrieve the current or default Overdrive clock ranges. 
+#int 	ADL_Overdrive6_State_Set (int iAdapterIndex, int iStateType, ADLOD6StateInfo *lpStateInfo)
+# 	Function to set the current Overdrive clock ranges. 
+#int 	ADL_Overdrive6_State_Reset (int iAdapterIndex, int iStateType)
+# 	Function to reset the Overdrive clock ranges to default. 
+#int 	ADL_Overdrive6_CurrentStatus_Get (int iAdapterIndex, ADLOD6CurrentStatus *lpCurrentStatus)
+# 	Function to retrieve current Overdrive and performance-related activity. 
+##int 	ADL_Overdrive6_ThermalController_Caps (int iAdapterIndex, ADLOD6ThermalControllerCaps *lpThermalControllerCaps)
+# 	Function to retrieve capabilities of the GPU thermal controller. 
+#int 	ADL_Overdrive6_Temperature_Get (int iAdapterIndex, int *lpTemperature)
+# 	Function to retrieve GPU temperature from the thermal controller. 
+#int 	ADL_Overdrive6_FanSpeed_Get (int iAdapterIndex, ADLOD6FanSpeedInfo *lpFanSpeedInfo)
+# 	Function to retrieve the fan speed reported by the thermal controller. 
+#int 	ADL_Overdrive6_FanSpeed_Set (int iAdapterIndex, ADLOD6FanSpeedValue *lpFanSpeedValue)
+# 	Function to set the fan speed. 
+#int 	ADL_Overdrive6_FanSpeed_Reset (int iAdapterIndex)
+# 	Function to reset the fan speed to the default. 
+#int 	ADL_Overdrive6_PowerControl_Caps (int iAdapterIndex, int *lpSupported)
+# 	Function to check for PowerControl capabilities. 
+#int 	ADL_Overdrive6_PowerControlInfo_Get (int iAdapterIndex, ADLOD6PowerControlInfo *lpPowerControlInfo)
+# 	Function to get the PowerControl adjustment range. 
+#int 	ADL_Overdrive6_PowerControl_Get (int iAdapterIndex, int *lpCurrentValue, int *lpDefaultValue)
+# 	Function to get the current and default PowerControl adjustment values. 
+#int 	ADL_Overdrive6_PowerControl_Set (int iAdapterIndex, int iValue)
+# 	Function to set the current PowerControl adjustment value.
 
 ADL_Display_WriteAndReadI2CRev_Get = _libadl.ADL_Display_WriteAndReadI2CRev_Get
 ADL_Display_WriteAndReadI2CRev_Get.restype = c_int
@@ -670,6 +730,10 @@ ADL_Display_DDCBlockAccess_Get.argtypes = [c_int, c_int, c_int, c_int, c_int, c_
 ADL_Display_DDCInfo_Get = _libadl.ADL_Display_DDCInfo_Get
 ADL_Display_DDCInfo_Get.restype = c_int
 ADL_Display_DDCInfo_Get.argtypes = [c_int, c_int, POINTER(ADLDDCInfo)]
+
+#TODO: Implement and test ADL_Display_DDCInfo2_Get
+#int 	ADL_Display_DDCInfo2_Get (int iAdapterIndex, int iDisplayIndex, ADLDDCInfo2 *lpInfo)
+# 	Function to get the DDC info.
 
 ADL_Display_EdidData_Get = _libadl.ADL_Display_EdidData_Get
 ADL_Display_EdidData_Get.restype = c_int
@@ -743,6 +807,33 @@ ADL_Workstation_LoadBalancing_Caps = _libadl.ADL_Workstation_LoadBalancing_Caps
 ADL_Workstation_LoadBalancing_Caps.restype = c_int
 ADL_Workstation_LoadBalancing_Caps.argtypes = [c_int, POINTER(c_int), POINTER(c_int)]
 
+#TODO: IMplement and test following Workstation APIs
+#int 	ADL_Workstation_DeepBitDepth_Get (int *lpCurDBDState, int *lpDefDBDState, int *lpCurGrayscale, int *lpDefGrayscale, int *lpCurBypass, int *lpDefBypass)
+# 	Function to get current requested state of Deep Bit Depth and related settings. 
+#int 	ADL_Workstation_DeepBitDepth_Set (int iDBDState, int iGrayscale, int iBypassGamma)
+# 	Function to set requested state of Deep Bit Depth and related settings. 
+#int 	ADL_Workstation_ECC_Caps (int iAdapterIndex, int *lpSupported)
+# 	Function to get ECC (Error Correction Code) Capabilities on the specified adapter. This function implements the CI call to get ECC (Error Correction Code) Capabilities on the specified adapter. 
+#int 	ADL_Workstation_ECC_Get (int iAdapterIndex, int *lpDefaultMode, int *lpCurrentMode, int *lpDesiredMode)
+# 	Function to get ECC (Error Correction Code) current and desired states on the specified adapter. This function implements the CI call to get ECC (Error Correction Code) current mode(driver applied mode) and the desired mode (user requested mode) on the specified adapter. 
+#int 	ADL_Workstation_ECCData_Get (int iAdapterIndex, ADLECCData *lpAdlEccData)
+# 	Function to get ECC statistics on the specified adapter. This function implements the CI call to get SEC(Single Error Correct) and DED(Double Error Detect) Counts on the specified adapter. 
+#int 	ADL_Workstation_ECC_Set (int iAdapterIndex, int iDesiredMode)
+# 	Function to set ECC Mode on the specified adapter This function implements the CI call to set ECC (Error Correction Code) to turn on and off this feature on the specified adapter.
+
+#TODO Implement and test following Application Profiles APIs
+#int 	ADL_ApplicationProfiles_System_Reload ()
+# 	Function to Reload System appprofiles. 
+#int 	ADL_ApplicationProfiles_User_Load ()
+# 	Function to Load User appprofiles. 
+#int 	ADL_ApplicationProfiles_User_Unload ()
+# 	Function to Unload User appprofiles. 
+#int 	ADL_ApplicationProfiles_ProfileOfAnApplication_Search (const char *FileName, const char *Path, const char *Version, const char *AppProfileArea, ADLApplicationProfile **lppProfile)
+# 	Function to retrieve the profile of an application defined in driver. 
+#int 	ADL_ApplicationProfiles_HitLists_Get (int iListType, int *lpNumApps, ADLApplicationData **lppAppList)
+# 	Function to retrieve the recent application list from registry.
+
+
 if _platform == "Linux" or _os == "posix":
     ADL_Adapter_MemoryInfo_Get = _libadl.ADL_Adapter_MemoryInfo_Get
     ADL_Adapter_MemoryInfo_Get.restype = c_int
@@ -793,3 +884,102 @@ if _platform == "Linux" or _os == "posix":
     ADL_Display_XrandrDisplayName_Get.restype = c_int
     ADL_Display_XrandrDisplayName_Get.argtypes = [c_int, c_int, c_char_p, c_int]
 
+    # TODO: implement the following linux apis: 
+#    Linux Specific APIs
+
+#Functions
+#int 	ADL_Adapter_MemoryInfo_Get (int iAdapterIndex, ADLMemoryInfo *lpMemoryInfo)
+# 	Function to retrieve memory information from the adapter. 
+#int 	ADL_Adapter_ConfigMemory_Get (int iADLAdapter, int iScreenWidth, int iScreenHeight, int displayFeatureMask, int numDisplays, ADLMemoryDisplayFeatures *displayFeatureList, int *iNumMemTypes, ADLMemoryRequired **lppMemRequired)
+# 	Function to get the memory configuration of an adapter. 
+#int 	ADL_Adapter_ObservedClockInfo_Get (int iAdapterIndex, int *lpCoreClock, int *lpMemoryClock)
+# 	Function to get the core and memory clock info of an adapter.  This is the clock displayed on CCC information center.          Specific logic is used to select appropriate clock for display in current configuration. 
+#int 	ADL_Controller_Color_Set (int iAdapterIndex, int iControllerIndex, ADLGamma adlGamma)
+# 	Function to set the current gamma value for a controller. 
+#int 	ADL_Controller_Color_Get (int iAdapterIndex, int iControllerIndex, ADLGamma *lpGammaCurrent, ADLGamma *lpGammaDefault, ADLGamma *lpGammaMin, ADLGamma *lpGammaMax)
+# 	Function to get the current value of gamma for a controller. 
+#int 	ADL_DesktopConfig_Get (int iAdapterIndex, int *lpDesktopConfig)
+# 	Function to get the Desktop Configuration. 
+#int 	ADL_DesktopConfig_Set (int iAdapterIndex, int iDesktopConfig)
+# 	Function to set the Desktop Configuration. 
+#int 	ADL_NumberOfDisplayEnable_Get (int iAdapterIndex, int *lpNumberOfDisplays)
+# 	Function to retrieve the number of enabled displays. 
+#int 	ADL_DisplayEnable_Set (int iAdapterIndex, int *lpDisplayIndexList, int iDisplayListSize, int bPersistOnly)
+# 	Function to dynamically enable displays on a GPU. 
+#int 	ADL_Display_IdentifyDisplay (int iAdapterIndex, int iDisplayIndex, int iDisplayControllerIndex, int iShow, int iDisplayNum, int iPosX, int iPosY)
+# 	Function to set the desktop configuration. 
+#int 	ADL_Display_LUTColor_Set (int iAdapterIndex, int iDisplayIndex, ADLGamma adlGamma)
+# 	Function to set the current gamma value for a LUT (controller). 
+#int 	ADL_Display_LUTColor_Get (int iAdapterIndex, int iDisplayIndex, ADLGamma *lpGammaCurrent, ADLGamma *lpGammaDefault, ADLGamma *lpGammaMin, ADLGamma *lpGammaMax)
+# 	Function to get the current value of gamma for a LUT (controller). 
+#int 	ADL_Adapter_XScreenInfo_Get (LPXScreenInfo lpXScreenInfo, int iInputSize)
+# 	Function to retrieve all X Screen information for all OS-known adapters. 
+#int 	ADL_Display_XrandrDisplayName_Get (int iAdapterIndex, int iDisplayIndex, char *lpXrandrDisplayName, int iBuffSize)
+# 	Function to retrieve the name of the Xrandr display. 
+#int 	ADL_Adapter_Tear_Free_Set (int iAdapter, int iRequested, int *pStatus)
+# 	Set the requested tear free desktop setting. 
+#int 	ADL_Adapter_Tear_Free_Get (int iAdapter, int *pDefault, int *pRequested, int *pStatus)
+# 	Get the requested tear free desktop setting and current status
+
+
+#TODO: Mark the following as depricated: (e.g. using this @depricate recipe: http://code.activestate.com/recipes/391367-deprecated/
+# and stacklevel=2 as shown here: http://docs.python.org/2/library/warnings.html)
+
+#    Deprecated List 
+#Global AdapterInfo::strXScreenConfigName [256] 
+#Internal x config file screen identifier name. Use XScreenInfo instead. 
+
+#Global ADLDisplayInfo::iDisplayControllerIndex 
+#The controller index to which the display is mapped.
+# Will not be used in the future
+
+#Global ADL_Adapter_ClockInfo_Get 
+#This API has been deprecated because it does not provide accurate clocks when the ASIC is over-clocked. Use the OD5 set of APIs, when OverDrive5 is supported. 
+
+#Global ADL_Display_AdapterID_Get 
+#This API will be removed. Use the duplicate API ADL_Adapter_ID_Get() 
+
+#Global ADL_Display_TVCaps_Get 
+#Dropping support for component, composite, and S-Video connectors. 
+
+#Global ADL_TV_Standard_Set 
+#Dropping support for component, composite, and S-Video connectors. 
+
+#Global ADL_TV_Standard_Get 
+#Dropping support for component, composite, and S-Video connectors. 
+
+#Global ADL_CV_DongleSettings_Get 
+#Dropping support for component, composite, and S-Video connectors. 
+
+#Global ADL_CV_DongleSettings_Set 
+#Dropping support for component, composite, and S-Video connectors. 
+
+#Global ADL_CV_DongleSettings_Reset 
+#Dropping support for component, composite, and S-Video connectors. 
+
+#Global ADL_Controller_Color_Set 
+#This API has been deprecated because the controller index is no longer used with DAL2. Replaced by ADL_Display_LUTColor_Set 
+
+#Global ADL_Controller_Color_Get 
+#This API has been deprecated because the controller index is no longer used with DAL2. Replaced by ADL_Display_LUTColor_Get 
+
+#Global ADL_DesktopConfig_Get 
+#This API has been deprecated because it was only used for RandR 1.1 (Red Hat 5.x) distributions which is now not supported. 
+
+#Global ADL_DesktopConfig_Set 
+#This API has been deprecated because it was only used for RandR 1.1 (Red Hat 5.x) distributions which is now not supported. 
+
+#Global ADL_NumberOfDisplayEnable_Get 
+#This API has been deprecated because it was only used for RandR 1.1 (Red Hat 5.x) distributions which is now not supported. 
+
+#Global ADL_DisplayEnable_Set 
+#This API has been deprecated because it was only used for RandR 1.1 (Red Hat 5.x) distributions which is now not supported. 
+
+#Group define_desktop_config 
+#This API has been deprecated because it was only used for RandR 1.1 (Red Hat 5.x) distributions which is now not supported. 
+
+#Group define_tv_caps 
+#Dropping support for TV displays 
+
+#Group define_cv_dongle 
+#Dropping support for Component Video displays
