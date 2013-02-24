@@ -1,12 +1,29 @@
 import os, sys
 from optparse import OptionParser
 from adl3 import *
+import string
 
 class ADLError(Exception):
     pass
 
 class atieyefinity(object):
-    """description of class"""
+    """This class captures all relevant eyefintity settings for the adapters of a system"""
+    ADLDisplayMap = struct_ADLDisplayMap()
+
+    def __str__(self):
+        retval = self.getTypeInfo(self.ADLDisplayMap)
+        return retval
+
+    def getTypeInfo(self, type): 
+        typeInfo = ""
+        for index, slotItem in type._fields_:
+            if (hasattr(slotItem, "_fields_")):
+                typeInfo += self.getTypeInfo(getattr(type, index))
+            else:
+                typeInfo += "%s " % index
+                typeInfo += str(getattr(type, index))
+                typeInfo += "\r\n"
+        return typeInfo
 
 
 def initialize():
@@ -22,7 +39,15 @@ def shutdown():
     if ADL_Main_Control_Destroy() != ADL_OK:
         raise ADLError("Couldn't destroy ADL interface global pointers.")
 
-def getDisplayMapConfig(adapter):
+#def getCurrentDisplayModesForAllDisplays(adapter):
+#    iAdapterIndex = c_int(-1)
+#	iDisplayIndex = c_int(-1)
+#	lpNumModes = LPDisplay
+#		ADLMode ** 	lppModes	 
+#    if ADL_Display_Modes_Get() != ADL_OK:
+#        raise ADLError("Unable to get current display modes.")
+
+def getDisplayMapConfigs(adapter):
     lpNumDisplayMap = c_int(-1)
     lpDisplayMap = LPADLDisplayMap()
     lpNumDisplayTarget = c_int(-1)
@@ -30,16 +55,17 @@ def getDisplayMapConfig(adapter):
     retval =  ADL_Display_DisplayMapConfig_Get(adapter, byref(lpNumDisplayMap), 
                                             byref(lpDisplayMap), byref(lpNumDisplayTarget), 
                                             byref(lppDisplayTarget), ADL_DISPLAY_DISPLAYMAP_OPTION_GPUINFO)
-
     if retval == ADL_OK:
         print "Got %d items in display map"  % lpNumDisplayMap.value
-        print "Got %d items display targets"  % lpNumDisplayTarget.value
+        print "Got %d display targets"  % lpNumDisplayTarget.value
+        eyefinityconfigs = []
         for num in range(0, lpNumDisplayMap.value):
-            print lpDisplayMap[num].iDisplayMapMask
-            #print lpDisplayMap[num]
-        return 
-
-    raise ADLError("Unable to retrieve the display map config.")
+            config = atieyefinity()
+            config.ADLDisplayMap = lpDisplayMap[num]
+            eyefinityconfigs.append(config)
+        return eyefinityconfigs
+    else:
+        raise ADLError("Unable to retrieve the display map config.")
 
 def printConfig():
     primaryAdapter = c_int(-1)
@@ -47,8 +73,9 @@ def printConfig():
         raise ADLError("Unable to retrieve the primary eyefinity adapter.")
     else:
         print "Primary adapter number %d" % primaryAdapter.value
-        getDisplayMapConfig(primaryAdapter)
-        
+        configs = getDisplayMapConfigs(primaryAdapter)
+        for config in configs:
+            print "%s" % config
     return
 
 if __name__ == "__main__":
